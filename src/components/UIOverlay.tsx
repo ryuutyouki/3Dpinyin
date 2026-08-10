@@ -285,50 +285,50 @@ const UIOverlay: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* 组词+读作：贴屏幕最右下角 + 大幅缩窄压薄，绝对不占中央 3D 字母区域 */}
-      <div className="absolute right-0 md:right-2 z-30 pointer-events-auto flex flex-col gap-1 w-[170px] sm:w-[200px] md:w-[260px]" style={{ bottom: "calc(env(safe-area-inset-bottom) + 190px)" }}>
+      {/* 组词+读作：贴屏幕最右下角 + 缩至最小宽度，左对齐无留白，绝对不占中央 3D 字母区域 */}
+      <div className="absolute right-0 md:right-1.5 z-30 pointer-events-auto flex flex-col gap-0.5 md:gap-1 w-[140px] sm:w-[170px] md:w-[220px]" style={{ bottom: "calc(env(safe-area-inset-bottom) + 190px)" }}>
         {/* 读作：卡片（紧凑薄版，贴右边） */}
         <motion.div 
           key={currentPinyin.pinyin + '-reading'}
           initial={{ opacity: 0, y: 10, x: 10 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
-          className="bg-white/95 backdrop-blur rounded-lg md:rounded-xl px-1.5 md:px-2.5 py-1 md:py-1.5 shadow-xl border-2 border-white flex items-center gap-1 w-fit ml-auto"
+          className="bg-white/95 backdrop-blur rounded-lg md:rounded-xl px-1.5 md:px-2 py-1 md:py-1 shadow-xl border-2 border-white flex items-center gap-1 w-fit ml-auto"
         >
-          <span className="text-xs md:text-lg font-black text-gray-700 whitespace-nowrap">
-            读作：<span className="text-blue-600 text-base md:text-2xl">{currentPinyin.chinese}</span>
+          <span className="text-[11px] md:text-base font-black text-gray-700 whitespace-nowrap">
+            读作：<span className="text-blue-600 text-sm md:text-xl">{currentPinyin.chinese}</span>
           </span>
           <button 
             onClick={() => playReadAudio(currentPinyin.chinese)}
-            className="bg-blue-100 text-blue-600 rounded-full p-1 md:p-1.5 hover:bg-blue-200 shrink-0"
+            className="bg-blue-100 text-blue-600 rounded-full p-1 hover:bg-blue-200 shrink-0"
           >
-            <Volume2 className="w-3 h-3 md:w-4 md:h-4" />
+            <Volume2 className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" />
           </button>
         </motion.div>
 
-        {/* 组词两张卡片：大幅缩窄 + 压薄，不遮挡中央字母 */}
+        {/* 组词两张卡片：左对齐砍掉左侧空白 + 缩窄到文字宽度，不遮挡中央字母 */}
         {currentPinyin.words.map((w, idx) => (
           <motion.div 
             key={`${w.spell}-${idx}`}
             initial={{ scale: 0, opacity: 0, x: 20 }}
             animate={{ scale: 1, opacity: 1, x: 0 }}
             transition={{ delay: 0.1 + idx * 0.05 }}
-            className="bg-white/95 backdrop-blur rounded-lg md:rounded-xl shadow-xl border-2 md:border-[3px] border-yellow-300 px-2 md:px-3 py-1.5 md:py-2 flex items-center gap-1.5 md:gap-2 w-full hover:scale-[1.02] transition-transform ml-auto"
+            className="bg-white/95 backdrop-blur rounded-lg md:rounded-xl shadow-xl border-2 md:border-[3px] border-yellow-300 px-1.5 md:px-2 py-1 md:py-1.5 flex items-center gap-1 md:gap-1.5 w-fit ml-auto hover:scale-[1.02] transition-transform"
           >
-            <div className="flex flex-col min-w-0 flex-1 items-end text-right">
-              <span className="font-black text-xs md:text-lg text-purple-600 tracking-wide break-all leading-tight mb-0.5">
+            <button 
+              onClick={() => playReadAudio(w.text)}
+              className="bg-yellow-100 text-yellow-700 rounded-full p-1 md:p-1.5 hover:bg-yellow-200 shrink-0 shadow border-2 border-yellow-200 order-1"
+              title={`播放${w.text}发音`}
+            >
+              <Volume2 className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" />
+            </button>
+            <div className="flex flex-col min-w-0 items-start text-left order-2">
+              <span className="font-black text-[11px] md:text-lg text-purple-600 tracking-wide leading-tight">
                 {w.spell}
               </span>
-              <span className="font-black text-lg md:text-2xl text-gray-800 break-all leading-tight">
+              <span className="font-black text-base md:text-xl text-gray-800 leading-tight">
                 {w.text}
               </span>
             </div>
-            <button 
-              onClick={() => playReadAudio(w.text)}
-              className="bg-yellow-100 text-yellow-700 rounded-full p-1 md:p-2 hover:bg-yellow-200 shrink-0 shadow border-2 border-yellow-200"
-              title={`播放${w.text}发音`}
-            >
-              <Volume2 className="w-3 h-3 md:w-4 md:h-4" />
-            </button>
           </motion.div>
         ))}
       </div>
