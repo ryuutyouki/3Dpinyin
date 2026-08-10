@@ -1,12 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Sky, Cloud, Stars } from '@react-three/drei';
+import { Sky, Stars } from '@react-three/drei';
 import { useGameStore } from './store/gameStore';
 import GameScene from './components/GameScene';
 import UIOverlay from './components/UIOverlay';
 import MenuScreen from './components/MenuScreen';
 import ReportScreen from './components/ReportScreen';
 import ThemeWrapper from './components/ThemeWrapper';
+
+const SimpleCloud: React.FC<{ position: [number, number, number]; scale?: number }> = ({ position, scale = 1 }) => {
+  const groupPos = useMemo(() => position, [position]);
+  return (
+    <group position={groupPos} scale={scale}>
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.9, 16, 12]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.85} roughness={1} />
+      </mesh>
+      <mesh position={[1.0, 0.2, 0]}>
+        <sphereGeometry args={[0.7, 16, 12]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.85} roughness={1} />
+      </mesh>
+      <mesh position={[-1.0, 0.15, 0]}>
+        <sphereGeometry args={[0.75, 16, 12]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.85} roughness={1} />
+      </mesh>
+      <mesh position={[0.4, 0.5, 0]}>
+        <sphereGeometry args={[0.6, 16, 12]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.85} roughness={1} />
+      </mesh>
+      <mesh position={[-0.4, 0.45, 0]}>
+        <sphereGeometry args={[0.6, 16, 12]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.85} roughness={1} />
+      </mesh>
+    </group>
+  );
+};
 
 const App: React.FC = () => {
   const { mode, theme, currentPinyin } = useGameStore();
@@ -32,15 +60,15 @@ const App: React.FC = () => {
         <div className="absolute inset-0 z-0">
           <Canvas shadows camera={mobileCam} dpr={[1, 2]}>
             {theme === 'cloud' && (
-              <>
-                <color attach="background" args={['#87CEEB']} />
-                <Sky sunPosition={[100, 20, 100]} turbidity={0.1} rayleigh={0.5} mieCoefficient={0.005} mieDirectionalG={0.8} />
-                <Cloud position={[-4, 2, -10]} speed={0.2} opacity={0.6} />
-                <Cloud position={[4, -2, -15]} speed={0.2} opacity={0.6} />
-                <Cloud position={[0, 4, -12]} speed={0.2} opacity={0.6} />
-                <Cloud position={[-2, 0, -8]} speed={0.2} opacity={0.5} />
-              </>
-            )}
+            <>
+              <color attach="background" args={['#87CEEB']} />
+              <Sky sunPosition={[100, 20, 100]} turbidity={0.1} rayleigh={0.5} mieCoefficient={0.005} mieDirectionalG={0.8} />
+              <SimpleCloud position={[-4, 2, -10]} scale={1.2} />
+              <SimpleCloud position={[4, -2, -15]} scale={1.0} />
+              <SimpleCloud position={[0, 4, -12]} scale={1.4} />
+              <SimpleCloud position={[-2, 0, -8]} scale={0.9} />
+            </>
+          )}
             {theme === 'starry' && (
               <>
                 <color attach="background" args={['#0B1F4A']} />
