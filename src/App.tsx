@@ -28,47 +28,55 @@ const App: React.FC = () => {
   return (
     <ThemeWrapper theme={theme}>
       <div className="w-full h-full relative font-sans">
-        <Canvas shadows camera={mobileCam} dpr={[1, 2]}>
-          {theme === 'cloud' && (
-            <>
-              <color attach="background" args={['#87CEEB']} />
-              <Sky sunPosition={[100, 20, 100]} turbidity={0.1} rayleigh={0.5} mieCoefficient={0.005} mieDirectionalG={0.8} />
-              <Cloud position={[-4, 2, -10]} speed={0.2} opacity={0.6} />
-              <Cloud position={[4, -2, -15]} speed={0.2} opacity={0.6} />
-              <Cloud position={[0, 4, -12]} speed={0.2} opacity={0.6} />
-              <Cloud position={[-2, 0, -8]} speed={0.2} opacity={0.5} />
-            </>
-          )}
-          {theme === 'starry' && (
-            <>
-              <color attach="background" args={['#0B1F4A']} />
-              <Stars radius={100} depth={50} count={isMobile ? 2500 : 5000} factor={4} saturation={0} fade speed={1} />
-              <fog attach="fog" args={['#0B1F4A', 10, 50]} />
-            </>
-          )}
-          {theme === 'forest' && (
-            <>
-              <color attach="background" args={['#86B560']} />
-              <Sky sunPosition={[50, 20, 50]} turbidity={0.5} rayleigh={0.5} />
-              <fog attach="fog" args={['#C1E1C1', 15, 40]} />
-            </>
-          )}
+        {/* 3D Canvas 层 — z-index: 0 永远在最底层 */}
+        <div className="absolute inset-0 z-0">
+          <Canvas shadows camera={mobileCam} dpr={[1, 2]}>
+            {theme === 'cloud' && (
+              <>
+                <color attach="background" args={['#87CEEB']} />
+                <Sky sunPosition={[100, 20, 100]} turbidity={0.1} rayleigh={0.5} mieCoefficient={0.005} mieDirectionalG={0.8} />
+                <Cloud position={[-4, 2, -10]} speed={0.2} opacity={0.6} />
+                <Cloud position={[4, -2, -15]} speed={0.2} opacity={0.6} />
+                <Cloud position={[0, 4, -12]} speed={0.2} opacity={0.6} />
+                <Cloud position={[-2, 0, -8]} speed={0.2} opacity={0.5} />
+              </>
+            )}
+            {theme === 'starry' && (
+              <>
+                <color attach="background" args={['#0B1F4A']} />
+                <Stars radius={100} depth={50} count={isMobile ? 2500 : 5000} factor={4} saturation={0} fade speed={1} />
+                <fog attach="fog" args={['#0B1F4A', 10, 50]} />
+              </>
+            )}
+            {theme === 'forest' && (
+              <>
+                <color attach="background" args={['#86B560']} />
+                <Sky sunPosition={[50, 20, 50]} turbidity={0.5} rayleigh={0.5} />
+                <fog attach="fog" args={['#C1E1C1', 15, 40]} />
+              </>
+            )}
 
-          <ambientLight intensity={theme === 'starry' ? 0.3 : 0.6} />
-          <directionalLight
-            position={[5, 10, 5]}
-            intensity={theme === 'starry' ? 0.5 : 1.2}
-            castShadow
-            shadow-mapSize-width={1024}
-            shadow-mapSize-height={1024}
-          />
-          
-          {currentPinyin && <GameScene />}
-        </Canvas>
+            <ambientLight intensity={theme === 'starry' ? 0.3 : 0.6} />
+            <directionalLight
+              position={[5, 10, 5]}
+              intensity={theme === 'starry' ? 0.5 : 1.2}
+              castShadow
+              shadow-mapSize-width={1024}
+              shadow-mapSize-height={1024}
+            />
+            
+            {currentPinyin && <GameScene />}
+          </Canvas>
+        </div>
 
-        {mode === 'menu' && <MenuScreen />}
-        {mode === 'report' && <ReportScreen />}
-        {(mode === 'practice' || mode === 'test') && <UIOverlay />}
+        {/* 2D UI 层 — z-index: 1000 强制压在 Canvas 之上 */}
+        <div className="absolute inset-0 z-[1000] pointer-events-none">
+          <div className="w-full h-full pointer-events-auto">
+            {mode === 'menu' && <MenuScreen />}
+            {mode === 'report' && <ReportScreen />}
+            {(mode === 'practice' || mode === 'test') && <UIOverlay />}
+          </div>
+        </div>
       </div>
     </ThemeWrapper>
   );
