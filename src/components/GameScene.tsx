@@ -4,6 +4,8 @@ import { useGameStore } from '../store/gameStore';
 import Explosion from './Explosion';
 import { playTTS } from '../utils/tts';
 
+const FONT_URL = `${import.meta.env.BASE_URL}fonts/helvetiker_bold.typeface.json`.replace(/\/+/g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
+
 const playStandard = (text: string) => {
   playTTS(text, 4).catch(() => {});
 };
@@ -32,7 +34,7 @@ const PinyinModel: React.FC<{ text: string; theme: string; chinese: string }> = 
     >
       <Center>
         <Text3D
-          font="/fonts/helvetiker_bold.typeface.json"
+          font={FONT_URL}
           size={size}
           height={0.45}
           curveSegments={16}
