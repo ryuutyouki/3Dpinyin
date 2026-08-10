@@ -158,30 +158,30 @@ const UIOverlay: React.FC = () => {
 
   return (
     <div className="overlay-root">
-      {/* Top Bar: Scores & Buttons - 移动端紧凑版：px-2 pt-2，防止刘海屏安全区 */}
-      <div className="absolute top-0 left-0 right-0 px-2 md:px-4 pt-[max(0.5rem,env(safe-area-inset-top)] pt-2 md:pt-4 pointer-events-auto z-30">
-        <div className="flex justify-between items-start gap-2">
-          <div className="flex flex-col gap-1 md:gap-2">
-            <div className="bg-white/90 backdrop-blur-md rounded-full px-2 md:px-3 py-1 md:py-1.5 flex items-center gap-1 md:gap-1.5 shadow-md border-2 border-white/50">
-              <Trophy className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
-              <span className="font-black text-gray-700 text-sm md:text-base">得分: {score}</span>
+      {/* Top Bar: Scores & Buttons —— 更紧凑，字号+图标统一更小，不占顶部纵深 */}
+      <div className="absolute top-0 left-0 right-0 px-1.5 md:px-3 pt-[max(0.3rem,env(safe-area-inset-top)] pt-1 md:pt-2.5 pointer-events-auto z-30">
+        <div className="flex justify-between items-start gap-1.5">
+          <div className="flex flex-col gap-0.5 md:gap-1">
+            <div className="bg-white/90 backdrop-blur-md rounded-full px-1.5 md:px-2.5 py-0.5 md:py-1 flex items-center gap-0.5 md:gap-1 shadow-md border-2 border-white/50">
+              <Trophy className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-yellow-500" />
+              <span className="font-black text-gray-700 text-xs md:text-base">得分:{score}</span>
             </div>
             {streak > 1 && (
               <motion.div 
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="bg-gradient-to-r from-orange-500 to-red-500 backdrop-blur-md rounded-full px-2 md:px-3 py-0.5 md:py-1 flex items-center gap-0.5 md:gap-1 shadow-md border-2 border-white/50 text-white w-fit"
+                className="bg-gradient-to-r from-orange-500 to-red-500 backdrop-blur-md rounded-full px-1.5 md:px-2.5 py-0.5 md:py-0.5 flex items-center gap-0.5 shadow-md border-2 border-white/50 text-white w-fit"
               >
-                <Flame className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                <span className="font-black text-[10px] md:text-xs">连对: {streak}</span>
-                {streak >= 5 && <span className="text-[10px] md:text-xs">全屏!</span>}
-                {streak >= 3 && streak < 5 && <span className="text-[10px] md:text-xs">彩虹!</span>}
+                <Flame className="w-2 h-2 md:w-2.5 md:h-2.5" />
+                <span className="font-black text-[9px] md:text-xs">连对:{streak}</span>
+                {streak >= 5 && <span className="text-[9px] md:text-xs">全屏</span>}
+                {streak >= 3 && streak < 5 && <span className="text-[9px] md:text-xs">彩虹</span>}
               </motion.div>
             )}
 
             {mode === 'practice' && (
-              <div className={`flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 rounded-full shadow-md backdrop-blur-md font-black text-white text-[10px] md:text-xs ${countdown <= 2 ? 'bg-red-500/90 animate-pulse' : 'bg-indigo-500/90'} w-fit`}>
-                <Clock className="w-2.5 h-2.5 md:w-3 md:h-3" />
+              <div className={`flex items-center gap-0.5 md:gap-1 px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full shadow-md backdrop-blur-md font-black text-white text-[9px] md:text-xs ${countdown <= 2 ? 'bg-red-500/90 animate-pulse' : 'bg-indigo-500/90'} w-fit`}>
+                <Clock className="w-2 h-2 md:w-2.5 md:h-2.5" />
                 <span>{countdown}s</span>
               </div>
             )}
@@ -189,18 +189,18 @@ const UIOverlay: React.FC = () => {
               <motion.div 
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white px-2 md:px-3 py-1 md:py-1.5 rounded-full font-black shadow-md flex items-center gap-1 md:gap-1.5 w-fit text-[10px] md:text-xs"
+                className="bg-gradient-to-r from-blue-400 to-cyan-400 text-white px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full font-black shadow-md flex items-center gap-0.5 md:gap-1 w-fit text-[9px] md:text-xs"
               >
-                <Play className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                跟读三遍~
+                <Play className="w-2 h-2 md:w-2.5 md:h-2.5" />
+                跟读三遍
               </motion.div>
             )}
           </div>
 
-          <div className="flex gap-1.5 md:gap-2 items-start">
+          <div className="flex gap-1 md:gap-1.5 items-start">
             {/* 学习模式 / 暂停切换按钮 */}
             <button 
-              className={`rounded-full p-2 md:p-2.5 shadow-md border-2 border-white/50 transition-all active:scale-95 ${
+              className={`rounded-full p-1.5 md:p-2 shadow-md border-2 border-white/50 transition-all active:scale-95 ${
                 isPaused ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white hover:brightness-110' : 'bg-white/90 hover:bg-white text-gray-700'
               }`}
               onClick={() => {
@@ -208,45 +208,45 @@ const UIOverlay: React.FC = () => {
               }}
               title={isPaused ? "恢复自动切题" : "进入学习模式（可反复点例词，不自动下一题）"}
             >
-              {isPaused ? <PlayCircle className="w-4 h-4 md:w-5 md:h-5" /> : <Pause className="w-4 h-4 md:w-5 md:h-5" />}
+              {isPaused ? <PlayCircle className="w-3.5 h-3.5 md:w-4.5 md:h-4.5" /> : <Pause className="w-3.5 h-3.5 md:w-4.5 md:h-4.5" />}
             </button>
 
             {/* 标准发音按钮：学习模式下也永远可以点 */}
             <button 
-              className="bg-white/90 hover:bg-white rounded-full p-2 md:p-2.5 shadow-md border-2 border-white/50 transition-all active:scale-95"
+              className="bg-white/90 hover:bg-white rounded-full p-1.5 md:p-2 shadow-md border-2 border-white/50 transition-all active:scale-95"
               onClick={() => playReadAudio(currentPinyin.chinese)}
               disabled={isExploding || isCoaching}
               title="标准发音"
             >
-              <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-blue-500" />
+              <Volume2 className="w-3.5 h-3.5 md:w-4.5 md:h-4.5 text-blue-500" />
             </button>
             
             <div className="relative group">
-              <button className="bg-white/90 hover:bg-white rounded-full p-2 md:p-2.5 shadow-md border-2 border-white/50 transition-all active:scale-95">
-                <Settings className="w-4 h-4 md:w-5 md:h-5 text-gray-600" />
+              <button className="bg-white/90 hover:bg-white rounded-full p-1.5 md:p-2 shadow-md border-2 border-white/50 transition-all active:scale-95">
+                <Settings className="w-3.5 h-3.5 md:w-4.5 md:h-4.5 text-gray-600" />
               </button>
-              <div className="absolute right-0 mt-2 w-24 md:w-28 bg-white rounded-xl shadow-xl border-2 border-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity overflow-hidden z-50">
-                <button onClick={() => setDifficulty('beginner')} className={`w-full text-left px-2 md:px-3 py-1 md:py-1.5 hover:bg-blue-50 font-black text-xs md:text-sm ${difficulty === 'beginner' ? 'text-blue-500 bg-blue-50' : 'text-gray-600'}`}>入门</button>
-                <button onClick={() => setDifficulty('intermediate')} className={`w-full text-left px-2 md:px-3 py-1 md:py-1.5 hover:bg-blue-50 font-black text-xs md:text-sm ${difficulty === 'intermediate' ? 'text-blue-500 bg-blue-50' : 'text-gray-600'}`}>基础</button>
-                <button onClick={() => setDifficulty('advanced')} className={`w-full text-left px-2 md:px-3 py-1 md:py-1.5 hover:bg-blue-50 font-black text-xs md:text-sm ${difficulty === 'advanced' ? 'text-blue-500 bg-blue-50' : 'text-gray-600'}`}>进阶</button>
+              <div className="absolute right-0 mt-1.5 w-20 md:w-24 bg-white rounded-xl shadow-xl border-2 border-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity overflow-hidden z-50">
+                <button onClick={() => setDifficulty('beginner')} className={`w-full text-left px-2 py-1 hover:bg-blue-50 font-black text-xs ${difficulty === 'beginner' ? 'text-blue-500 bg-blue-50' : 'text-gray-600'}`}>入门</button>
+                <button onClick={() => setDifficulty('intermediate')} className={`w-full text-left px-2 py-1 hover:bg-blue-50 font-black text-xs ${difficulty === 'intermediate' ? 'text-blue-500 bg-blue-50' : 'text-gray-600'}`}>基础</button>
+                <button onClick={() => setDifficulty('advanced')} className={`w-full text-left px-2 py-1 hover:bg-blue-50 font-black text-xs ${difficulty === 'advanced' ? 'text-blue-500 bg-blue-50' : 'text-gray-600'}`}>进阶</button>
               </div>
             </div>
 
             {mode === 'test' && (
               <button 
                 onClick={endTest}
-                className="bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full px-2 md:px-3 py-2 md:py-2.5 shadow-md border-2 border-white/50 transition-all active:scale-95 font-black flex items-center gap-1 md:gap-1.5 text-[10px] md:text-xs"
+                className="bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full px-1.5 md:px-2.5 py-1.5 md:py-2 shadow-md border-2 border-white/50 transition-all active:scale-95 font-black flex items-center gap-0.5 md:gap-1 text-[9px] md:text-xs"
               >
-                <Trophy className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                <Trophy className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 <span className="hidden md:inline">结束</span>
               </button>
             )}
             <button 
               onClick={goToMenu}
-              className="bg-white/90 hover:bg-white rounded-full p-2 md:p-2.5 shadow-md border-2 border-white/50 transition-all active:scale-95"
+              className="bg-white/90 hover:bg-white rounded-full p-1.5 md:p-2 shadow-md border-2 border-white/50 transition-all active:scale-95"
               title="返回主页"
             >
-              <Home className="w-4 h-4 md:w-5 md:h-5 text-gray-600" />
+              <Home className="w-3.5 h-3.5 md:w-4.5 md:h-4.5 text-gray-600" />
             </button>
           </div>
         </div>
@@ -285,49 +285,49 @@ const UIOverlay: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* 组词+读作：移动端改到屏幕右下方小尺寸（紧贴选项上方）；桌面端保持原大尺寸 */}
-      <div className="absolute right-1 md:right-6 z-30 pointer-events-auto flex flex-col gap-1 md:gap-2 w-[210px] sm:w-[240px] md:w-[340px]" style={{ bottom: "calc(env(safe-area-inset-bottom) + 190px)" }}>
-        {/* 读作：卡片 */}
+      {/* 组词+读作：贴屏幕最右下角 + 大幅缩窄压薄，绝对不占中央 3D 字母区域 */}
+      <div className="absolute right-0 md:right-2 z-30 pointer-events-auto flex flex-col gap-1 w-[170px] sm:w-[200px] md:w-[260px]" style={{ bottom: "calc(env(safe-area-inset-bottom) + 190px)" }}>
+        {/* 读作：卡片（紧凑薄版，贴右边） */}
         <motion.div 
           key={currentPinyin.pinyin + '-reading'}
           initial={{ opacity: 0, y: 10, x: 10 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
-          className="bg-white/95 backdrop-blur rounded-xl md:rounded-2xl px-2 md:px-3 py-1.5 md:py-2 shadow-xl border-2 md:border-3 border-white flex items-center gap-1 md:gap-2 w-fit ml-auto"
+          className="bg-white/95 backdrop-blur rounded-lg md:rounded-xl px-1.5 md:px-2.5 py-1 md:py-1.5 shadow-xl border-2 border-white flex items-center gap-1 w-fit ml-auto"
         >
-          <span className="text-sm md:text-xl font-black text-gray-700 whitespace-nowrap">
-            读作：<span className="text-blue-600 text-lg md:text-3xl">{currentPinyin.chinese}</span>
+          <span className="text-xs md:text-lg font-black text-gray-700 whitespace-nowrap">
+            读作：<span className="text-blue-600 text-base md:text-2xl">{currentPinyin.chinese}</span>
           </span>
           <button 
             onClick={() => playReadAudio(currentPinyin.chinese)}
-            className="bg-blue-100 text-blue-600 rounded-full p-1.5 md:p-2 hover:bg-blue-200 shrink-0"
+            className="bg-blue-100 text-blue-600 rounded-full p-1 md:p-1.5 hover:bg-blue-200 shrink-0"
           >
-            <Volume2 className="w-4 h-4 md:w-5 md:h-5" />
+            <Volume2 className="w-3 h-3 md:w-4 md:h-4" />
           </button>
         </motion.div>
 
-        {/* 组词两张卡片：移动端汉字/拼音字号紧凑但清晰 */}
+        {/* 组词两张卡片：大幅缩窄 + 压薄，不遮挡中央字母 */}
         {currentPinyin.words.map((w, idx) => (
           <motion.div 
             key={`${w.spell}-${idx}`}
             initial={{ scale: 0, opacity: 0, x: 20 }}
             animate={{ scale: 1, opacity: 1, x: 0 }}
             transition={{ delay: 0.1 + idx * 0.05 }}
-            className="bg-white/95 backdrop-blur rounded-xl md:rounded-2xl shadow-2xl border-[3px] md:border-[4px] border-yellow-300 px-2.5 md:px-4 py-2 md:py-3 flex items-center gap-2 md:gap-3 w-full hover:scale-[1.02] transition-transform ml-auto"
+            className="bg-white/95 backdrop-blur rounded-lg md:rounded-xl shadow-xl border-2 md:border-[3px] border-yellow-300 px-2 md:px-3 py-1.5 md:py-2 flex items-center gap-1.5 md:gap-2 w-full hover:scale-[1.02] transition-transform ml-auto"
           >
             <div className="flex flex-col min-w-0 flex-1 items-end text-right">
-              <span className="font-black text-sm md:text-xl text-purple-600 tracking-wide break-all leading-snug mb-0.5">
+              <span className="font-black text-xs md:text-lg text-purple-600 tracking-wide break-all leading-tight mb-0.5">
                 {w.spell}
               </span>
-              <span className="font-black text-xl md:text-3xl text-gray-800 break-all leading-snug">
+              <span className="font-black text-lg md:text-2xl text-gray-800 break-all leading-tight">
                 {w.text}
               </span>
             </div>
             <button 
               onClick={() => playReadAudio(w.text)}
-              className="bg-yellow-100 text-yellow-700 rounded-full p-2 md:p-2.5 hover:bg-yellow-200 shrink-0 shadow-md border-2 border-yellow-200"
+              className="bg-yellow-100 text-yellow-700 rounded-full p-1 md:p-2 hover:bg-yellow-200 shrink-0 shadow border-2 border-yellow-200"
               title={`播放${w.text}发音`}
             >
-              <Volume2 className="w-4 h-4 md:w-5 md:h-5" />
+              <Volume2 className="w-3 h-3 md:w-4 md:h-4" />
             </button>
           </motion.div>
         ))}
@@ -377,7 +377,7 @@ const UIOverlay: React.FC = () => {
               whileTap={{ scale: 0.95 }}
               onClick={() => checkAnswer(opt)}
               disabled={isExploding || showFeedback !== null || isCoaching}
-              className="bg-white border-b-[5px] md:border-b-[6px] border-blue-300 text-blue-600 text-xl md:text-3xl font-black py-3 md:py-5 px-3 md:px-8 rounded-xl md:rounded-2xl shadow-lg hover:bg-blue-50 hover:border-blue-400 disabled:opacity-40 disabled:cursor-not-allowed w-full md:w-auto md:min-w-[80px] md:min-w-[110px]"
+              className="bg-white border-b-[4px] md:border-b-[5px] border-blue-300 text-blue-600 text-lg md:text-2xl font-black py-2 md:py-3.5 px-3 md:px-6 rounded-xl md:rounded-2xl shadow-lg hover:bg-blue-50 hover:border-blue-400 disabled:opacity-40 disabled:cursor-not-allowed w-full md:w-auto md:min-w-[70px] md:min-w-[90px]"
             >
               {opt}
             </motion.button>

@@ -16,8 +16,8 @@ const PinyinModel: React.FC<{ text: string; theme: string; chinese: string }> = 
     theme === 'forest' ? '#2E7D32' :
     '#E91E63';
 
-  // 动态调整尺寸
-  const size = text.length >= 3 ? 1.2 : text.length >= 2 ? 1.5 : 2;
+  // 动态调整尺寸（UI遮挡问题优化后放大字母，让字母更清晰突出 */
+  const size = text.length >= 3 ? 1.35 : text.length >= 2 ? 1.7 : 2.3;
   const safeGlyphText = text.replace(/ü/g, 'ϋ');
 
   // 彻底移除 Float 浮动组件，防止乱动、遮挡；并整体下移，避开顶栏

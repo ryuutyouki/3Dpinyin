@@ -63,10 +63,11 @@ const App: React.FC = () => {
             <>
               <color attach="background" args={['#87CEEB']} />
               <Sky sunPosition={[100, 20, 100]} turbidity={0.1} rayleigh={0.5} mieCoefficient={0.005} mieDirectionalG={0.8} />
-              <SimpleCloud position={[-4, 2, -10]} scale={1.2} />
-              <SimpleCloud position={[4, -2, -15]} scale={1.0} />
-              <SimpleCloud position={[0, 4, -12]} scale={1.4} />
-              <SimpleCloud position={[-2, 0, -8]} scale={0.9} />
+              {/* 云朵全部移到画面 4 个角落+远景位置，绝不和中央 3D 字母重叠 */}
+              <SimpleCloud position={[-6.5, 4.5, -18]} scale={1.0} />
+              <SimpleCloud position={[6.5, 5.5, -20]} scale={1.2} />
+              <SimpleCloud position={[-7, -1, -22]} scale={0.9} />
+              <SimpleCloud position={[7, -0.5, -19]} scale={1.1} />
             </>
           )}
             {theme === 'starry' && (
