@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #87CEEB; /* Sky blue background for default cloud theme */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* 安全区域适配（iPhone 刘海屏/灵动岛） */
+@supports (padding: max(0px)) {
+  html, body, #root {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* 移动端小屏全局字号自适应（12px base = 0.75rem） */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+@media (max-width: 380px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* 确保所有 overlay 层不遮挡底层点击 */
+.overlay-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.overlay-child {
+  pointer-events: auto;
+  position: relative;
+  z-index: 20;
+}
+
+/* Canvas 正常接收点击事件 */
+canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: auto !important;
+  touch-action: none;
+}
+
+/* 隐藏移动端默认滚动条（菜单页 overflow-auto 时） */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+}
+

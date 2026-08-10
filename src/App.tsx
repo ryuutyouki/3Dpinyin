@@ -1,0 +1,77 @@
+import React, { useEffect, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Sky, Cloud, Stars } from '@react-three/drei';
+import { useGameStore } from './store/gameStore';
+import GameScene from './components/GameScene';
+import UIOverlay from './components/UIOverlay';
+import MenuScreen from './components/MenuScreen';
+import ReportScreen from './components/ReportScreen';
+import ThemeWrapper from './components/ThemeWrapper';
+
+const App: React.FC = () => {
+  const { mode, theme, currentPinyin } = useGameStore();
+  // 响应式判断移动端 / 桌面端，动态调整 3D 相机距离与视角
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // 移动端：相机拉远 + fov 调大，保证 3D 字母不被 UI 遮挡，看的更完整
+  const mobileCam = {
+    position: [0, 0, isMobile ? 11.5 : 8] as [number, number, number],
+    fov: isMobile ? 55 : 45,
+  };
+
+  return (
+    <ThemeWrapper theme={theme}>
+      <div className="w-full h-full relative font-sans">
+        <Canvas shadows camera={mobileCam} dpr={[1, 2]}>
+          {theme === 'cloud' && (
+            <>
+              <color attach="background" args={['#87CEEB']} />
+              <Sky sunPosition={[100, 20, 100]} turbidity={0.1} rayleigh={0.5} mieCoefficient={0.005} mieDirectionalG={0.8} />
+              <Cloud position={[-4, 2, -10]} speed={0.2} opacity={0.6} />
+              <Cloud position={[4, -2, -15]} speed={0.2} opacity={0.6} />
+              <Cloud position={[0, 4, -12]} speed={0.2} opacity={0.6} />
+              <Cloud position={[-2, 0, -8]} speed={0.2} opacity={0.5} />
+            </>
+          )}
+          {theme === 'starry' && (
+            <>
+              <color attach="background" args={['#0B1F4A']} />
+              <Stars radius={100} depth={50} count={isMobile ? 2500 : 5000} factor={4} saturation={0} fade speed={1} />
+              <fog attach="fog" args={['#0B1F4A', 10, 50]} />
+            </>
+          )}
+          {theme === 'forest' && (
+            <>
+              <color attach="background" args={['#86B560']} />
+              <Sky sunPosition={[50, 20, 50]} turbidity={0.5} rayleigh={0.5} />
+              <fog attach="fog" args={['#C1E1C1', 15, 40]} />
+            </>
+          )}
+
+          <ambientLight intensity={theme === 'starry' ? 0.3 : 0.6} />
+          <directionalLight
+            position={[5, 10, 5]}
+            intensity={theme === 'starry' ? 0.5 : 1.2}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
+          
+          {currentPinyin && <GameScene />}
+        </Canvas>
+
+        {mode === 'menu' && <MenuScreen />}
+        {mode === 'report' && <ReportScreen />}
+        {(mode === 'practice' || mode === 'test') && <UIOverlay />}
+      </div>
+    </ThemeWrapper>
+  );
+};
+
+export default App;
